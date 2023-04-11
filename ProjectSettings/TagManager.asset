@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Background
   - Player
-  - 
-  - 
+  - Ground
+  - Bullet
   - 
   - 
   - 
@@ -43,6 +43,12 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 4181742167
+    locked: 0
+  - name: Ground
+    uniqueID: 461170319
+    locked: 0
+  - name: Bullet
+    uniqueID: 2654524069
     locked: 0
   - name: Player
     uniqueID: 1715573215
