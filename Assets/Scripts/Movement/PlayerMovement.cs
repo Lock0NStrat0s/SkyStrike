@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
  void Update()
  {
 
-  //   Fly();
+  Fly();
  }
 
  void OnMove(InputValue value)
