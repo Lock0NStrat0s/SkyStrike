@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
  [SerializeField] Transform gun;
  [SerializeField] Camera mainCam;
  Vector2 moveInput;                                 //get input from user
+ Vector2 temp;
  Rigidbody2D myRigidbody;
  CapsuleCollider2D myBodyCollider;
  bool hasFlippedRight = false;
@@ -45,13 +46,13 @@ public class PlayerMovement : MonoBehaviour
   {
    hasFlippedRight = true;
    hasFlippedLeft = false;
-   transform.localScale = new Vector2(1f, -transform.localScale.y);
+   transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
   }
   else if ((orientation > -90 && orientation < 90) && !hasFlippedLeft)
   {
    hasFlippedRight = false;
    hasFlippedLeft = true;
-   transform.localScale = new Vector2(1f, -transform.localScale.y);
+   transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
   }
  }
 
@@ -62,19 +63,21 @@ public class PlayerMovement : MonoBehaviour
 
  void OnClick(InputValue value)
  {
-  RotateToMouse();
+  Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+  float angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
+  transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), Time.deltaTime * turnSpeed);
  }
  private void IsMouseBeingHeld()
  {
   if (Mouse.current.leftButton.isPressed)
   {
-   RotateToMouse();
+   if (temp != Mouse.current.position.ReadValue())
+   {
+    Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+    float angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
+    transform.rotation = Quaternion.Euler(0, 0, angle);
+    temp = Mouse.current.position.ReadValue();
+   }
   }
- }
- private void RotateToMouse()
- {
-  Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-  float angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
-  transform.rotation = Quaternion.Euler(0, 0, angle);
  }
 }
