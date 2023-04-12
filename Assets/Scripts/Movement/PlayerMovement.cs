@@ -12,11 +12,13 @@ public class PlayerMovement : MonoBehaviour
  [SerializeField] Transform gun;
  [SerializeField] Camera mainCam;
  Vector2 moveInput;                                 //get input from user
- Vector2 temp;
+ Vector2 temp;                                      //holds temp value to store
  Rigidbody2D myRigidbody;
  CapsuleCollider2D myBodyCollider;
- bool hasFlippedRight = false;
+ bool hasFlippedRight = false;                      //check orientation of plane
  bool hasFlippedLeft = true;
+ bool hasRotated = true;                            //check if rotation to mouse click is complete
+ float angle;                                       //angle to rotate towards
  bool isAlive = true;
  void Start()
  {
@@ -29,7 +31,10 @@ public class PlayerMovement : MonoBehaviour
   Fly();
   FlipSprite();
   IsMouseBeingHeld();
-
+  if (!hasRotated)
+  {
+   RotatePlaneToPoint();
+  }
  }
  void Fly()
  {
@@ -39,8 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
  void FlipSprite()
  {
-  var orientation = transform.rotation.z * Mathf.Rad2Deg * 2;
-  Debug.Log(orientation);
+  float orientation = transform.rotation.z * Mathf.Rad2Deg * 2;
 
   if (((orientation > 90 && orientation < 180) || (orientation > -180 && orientation < -90)) && !hasFlippedRight)
   {
@@ -64,9 +68,21 @@ public class PlayerMovement : MonoBehaviour
  void OnClick(InputValue value)
  {
   Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-  float angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
+  angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
+  if (transform.rotation != Quaternion.Euler(0, 0, angle))
+  {
+   hasRotated = false;
+  }
+  else
+  {
+   hasRotated = true;
+  }
+ }
+ private void RotatePlaneToPoint()
+ {
   transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), Time.deltaTime * turnSpeed);
  }
+
  private void IsMouseBeingHeld()
  {
   if (Mouse.current.leftButton.isPressed)
@@ -74,8 +90,15 @@ public class PlayerMovement : MonoBehaviour
    if (temp != Mouse.current.position.ReadValue())
    {
     Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-    float angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
-    transform.rotation = Quaternion.Euler(0, 0, angle);
+    angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
+    if (transform.rotation != Quaternion.Euler(0, 0, angle))
+    {
+     hasRotated = false;
+    }
+    else
+    {
+     hasRotated = true;
+    }
     temp = Mouse.current.position.ReadValue();
    }
   }
