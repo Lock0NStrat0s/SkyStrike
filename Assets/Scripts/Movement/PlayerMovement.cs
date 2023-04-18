@@ -67,6 +67,21 @@ public class PlayerMovement : MonoBehaviour
 
  void OnClick(InputValue value)
  {
+  Rotation();
+ }
+ void IsMouseBeingHeld()
+ {
+  if (Mouse.current.leftButton.isPressed)
+  {
+   if (temp != Mouse.current.position.ReadValue())
+   {
+    Rotation();
+    temp = Mouse.current.position.ReadValue();
+   }
+  }
+ }
+ void Rotation()
+ {
   Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
   angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
   if (transform.rotation != Quaternion.Euler(0, 0, angle))
@@ -78,29 +93,8 @@ public class PlayerMovement : MonoBehaviour
    hasRotated = true;
   }
  }
- private void RotatePlaneToPoint()
+ void RotatePlaneToPoint()
  {
   transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), Time.deltaTime * turnSpeed);
- }
-
- private void IsMouseBeingHeld()
- {
-  if (Mouse.current.leftButton.isPressed)
-  {
-   if (temp != Mouse.current.position.ReadValue())
-   {
-    Vector2 turn = (transform.position - mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-    angle = Mathf.Atan2(turn.y, turn.x) * Mathf.Rad2Deg;
-    if (transform.rotation != Quaternion.Euler(0, 0, angle))
-    {
-     hasRotated = false;
-    }
-    else
-    {
-     hasRotated = true;
-    }
-    temp = Mouse.current.position.ReadValue();
-   }
-  }
  }
 }

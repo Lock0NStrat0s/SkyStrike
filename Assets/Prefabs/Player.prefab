@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 51100575531623908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.12, y: 1.78, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 51100575380950137}
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  turnSpeed: 100
+  turnSpeed: 250
   bullet: {fileID: 6827723021888257835, guid: 1d8e6f5b581d95c41904a755c43adfe2, type: 3}
   gun: {fileID: 51100575380950137}
   mainCam: {fileID: 0}
